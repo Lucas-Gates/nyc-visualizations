@@ -69,6 +69,7 @@ df_clean = df.copy()
 
 # Standardize column names (strip spaces, uppercase, underscores)
 df_clean.columns = df_clean.columns.str.strip().str.upper().str.replace(r'\s+', '_', regex=True)
+print("Column names standardized.\n")
 
 # Drop fully duplicate rows
 before = len(df_clean)
@@ -92,23 +93,25 @@ df_clean['YEAR']        = df_clean['CRASH_DATE'].dt.year
 unparseable = df_clean['CRASH_DATE'].isna().sum()
 print(f"Unparseable dates                   : {unparseable:,}")
 
-# Fix ZIP CODE — should always be a string, never a number
+# Fix ZIP CODE to be a string, never a number
 df_clean['ZIP_CODE'] = df_clean['ZIP_CODE'].astype(str).str.zfill(5).str.strip()
 df_clean['ZIP_CODE'] = df_clean['ZIP_CODE'].replace({'nan': np.nan, '00000': np.nan})
+print(f"ZIP_CODE cleaned and standardized.\n")
 
-# Standardize BOROUGH — title case, unknown → NaN
+# Standardize BOROUGH title case, unknown → NaN
 df_clean['BOROUGH'] = df_clean['BOROUGH'].str.strip().str.title()
 valid_boroughs = ['Manhattan', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island']
 df_clean.loc[~df_clean['BOROUGH'].isin(valid_boroughs), 'BOROUGH'] = np.nan
+print(f"BOROUGH standardized. Invalid entries set to NaN.\n")
 
-# Standardize contributing factors — blank/unspecified → NaN
+# Standardize contributing factors: blank/unspecified → NaN
 unspecified = ['Unspecified', '1', '', 'nan']
 for col in ['CONTRIBUTING_FACTOR_VEHICLE_1', 'CONTRIBUTING_FACTOR_VEHICLE_2']:
     if col in df_clean.columns:
         df_clean[col] = df_clean[col].str.strip().str.title()
         df_clean[col] = df_clean[col].replace(unspecified, np.nan)
 
-# Standardize vehicle type codes — consolidate common variants
+# Standardize vehicle type codes: consolidate common variants
 vehicle_map = {
     'Sedan'      : ['Sedan', '4 Dr Sedan', '2 Dr Sedan', 'Passenger Vehicle'],
     'SUV'        : ['Station Wagon/Sport Utility Vehicle', 'Suv'],
@@ -181,8 +184,8 @@ plt.bar(hours + bar_width / 2, weekend.reindex(hours, fill_value=0),
         width=bar_width, label='Weekend', color='orange', edgecolor='black', linewidth=1, alpha=0.85)
 
 # Shade rush hour bands
-plt.axvspan(7 - 0.5, 9 + 0.5, alpha=0.08, color='red', label='Rush Hours')
-plt.axvspan(16 - 0.5, 18 + 0.5, alpha=0.08, color='red')
+plt.axvspan(7 - 0.5, 9 + 0.5, alpha=0.12, color='red', label='Rush Hours')
+plt.axvspan(16 - 0.5, 18 + 0.5, alpha=0.12, color='red')
 
 plt.title("NYC Motor Vehicle Crashes by Hour of Day\nWeekday vs. Weekend")
 plt.xlabel("Hour of Day (0 = Midnight)")
