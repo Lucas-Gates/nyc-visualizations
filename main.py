@@ -17,7 +17,7 @@ print("--------------------------\n\n")
 # PART 1: Load & Inspect Raw Data
 #--------------------------------#
 
-df = pd.read_csv('Motor_Vehicle_Collisions_-_Crashes_20260421.csv')
+df = pd.read_csv('\Data\Motor_Vehicle_Collisions_-_Crashes_20260421.csv')
 
 # First 5 rows
 print("First 5 Rows: \n")
