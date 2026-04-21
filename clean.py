@@ -15,9 +15,10 @@ print("\n")
 
 
 data = data[data['LATITUDE'].notna() & data['LONGITUDE'].notna()]
+data = data.drop(columns = ['ZIP CODE'])
+data = data[data['NUMBER OF PERSONS INJURED'].notna() & data['NUMBER OF PERSONS KILLED'].notna()]
 
 print("Missing Values:")
 print(data.isna().sum())
-
 
 
