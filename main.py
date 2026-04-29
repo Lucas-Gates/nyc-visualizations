@@ -153,6 +153,10 @@ print(df_clean['BOROUGH'].value_counts(dropna=False).to_string())
 print(f"\nYear Range: {df_clean['YEAR'].min()} – {df_clean['YEAR'].max()}")
 print("\n[INFO] Basic cleaning complete.\n")
 
+#save cleaned dataset
+output_path = r'data\cleaned_motor_vehicle_crashes.csv'
+df_clean.to_csv(output_path, index=False)
+print(f"Cleaned dataset saved to: {output_path}\n")
 
 #--------------------------------------------#
 # PART 3: Visualization — Crashes by Hour
