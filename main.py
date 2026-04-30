@@ -169,6 +169,8 @@ print("\n-------------------------------------------------\n")
 print("PART 3: Distribution Visualization — Crashes by Hour\n")
 print("-------------------------------------------------\n")
 
+data_3 = df_clean.copy()
+
 #12 hour labels
 def format_hour(h):
     if h == 0:
@@ -190,7 +192,7 @@ colors = {
 }
 plot_order = ["Property Damage", "Injury", "Fatal"]
 for severity in plot_order:
-    subset = df_clean[df_clean["SEVERITY_LABEL"] == severity]
+    subset = data_3[data_3["SEVERITY_LABEL"] == severity]
     counts = subset["HOUR"].value_counts().sort_index()
     counts = counts.reindex(range(24), fill_value=0)
     percent = counts / counts.sum() * 100
@@ -227,22 +229,22 @@ print("\n-------------------------------------------------\n")
 print("PART 4: Relationship Visualization — Crashes by Hour\n")
 print("-------------------------------------------------\n")
 
-data = df_clean.copy()
+data4 = df_clean.copy()
 
 ###data = data[::5]
 
 
-data = data[data['LATITUDE'].notna() & data['LONGITUDE'].notna()]
-data = data.drop(columns = ['ZIP_CODE'])
-data = data[data['NUMBER_OF_PERSONS_INJURED'].notna() & data['NUMBER_OF_PERSONS_KILLED'].notna()]
+data4 = data4[data4['LATITUDE'].notna() & data4['LONGITUDE'].notna()]
+data4 = data4.drop(columns = ['ZIP_CODE'])
+data4 = data4[data4['NUMBER_OF_PERSONS_INJURED'].notna() & data4['NUMBER_OF_PERSONS_KILLED'].notna()]
 
-data['CRASH_DATE'] = pd.to_datetime(data['CRASH_DATE'])
+data4['CRASH_DATE'] = pd.to_datetime(data4['CRASH_DATE'])
 
 
-data['YEAR'] = data['CRASH_DATE'].dt.year
+data4['YEAR'] = data4['CRASH_DATE'].dt.year
 
-data = data[data['YEAR'] != 2026]
-years = data.groupby('YEAR').agg(
+data4 = data4[data4['YEAR'] != 2026]
+years = data4.groupby('YEAR').agg(
     CRASH_COUNT=('COLLISION_ID', 'size'),
     TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
     AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
@@ -268,13 +270,15 @@ fig.show()
 # PART 5: Aggregate Visualization - Crashes by Hour
 #-------------------------------------------------#
 
+data5 = df_clean.copy()
+
 print("\n-------------------------------------------------\n")
 print("PART 5: Aggregate Visualization — Crashes by Hour\n")
 print("-------------------------------------------------\n")
 
 # Aggregate: crash count by HOUR and DAY_TYPE
 hourly = (
-    df_clean.dropna(subset=['HOUR'])
+    data5.dropna(subset=['HOUR'])
     .groupby(['HOUR', 'DAY_TYPE'])
     .size()
     .reset_index(name='CRASH_COUNT')
