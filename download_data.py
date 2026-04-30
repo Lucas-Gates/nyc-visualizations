@@ -9,7 +9,7 @@ if not os.path.exists("data"):
     os.makedirs("data")
 
 #save location
-output_path = "data/new_DATA.csv"
+output_path = "data/2025_DATA.csv"
 
 #download
 df = pd.read_csv(url, low_memory=False)

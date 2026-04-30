@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+import geopandas as gpd
+import plotly.express as px
 
 
 #------#
@@ -71,7 +73,7 @@ df_clean = df.copy()
 df_clean.columns = df_clean.columns.str.strip().str.upper().str.replace(r'\s+', '_', regex=True)
 print("Column names standardized.\n")
 
-# Drop fully duplicate rows
+# Drop duplicate rows
 before = len(df_clean)
 df_clean = df_clean.drop_duplicates()
 print(f"Duplicate rows removed              : {before - len(df_clean):,}")
@@ -158,6 +160,164 @@ output_path = r'data\cleaned_motor_vehicle_crashes.csv'
 df_clean.to_csv(output_path, index=False)
 print(f"Cleaned dataset saved to: {output_path}\n")
 
+
+#-------------------------------------------------#
+# PART 3: Distribution Visualization - Crashes by Hour
+#-------------------------------------------------#
+
+print("\n-------------------------------------------------\n")
+print("PART 3: Distribution Visualization — Crashes by Hour\n")
+print("-------------------------------------------------\n")
+
+data_3 = df_clean.copy()
+
+#12 hour labels
+def format_hour(h):
+    if h == 0:
+        return "12 AM"
+    elif h < 12:
+        return f"{h} AM"
+    elif h == 12:
+        return "12 PM"
+    else:
+        return f"{h - 12} PM"
+hour_labels = [format_hour(h) for h in range(24)]
+
+#plot
+plt.figure(figsize=(11, 5))
+colors = {
+    "Property Damage": "blue",
+    "Injury": "orange",
+    "Fatal": "red"
+}
+plot_order = ["Property Damage", "Injury", "Fatal"]
+for severity in plot_order:
+    subset = data_3[data_3["SEVERITY_LABEL"] == severity]
+    counts = subset["HOUR"].value_counts().sort_index()
+    counts = counts.reindex(range(24), fill_value=0)
+    percent = counts / counts.sum() * 100
+    smooth = percent.rolling(window=3, center=True, min_periods=1).mean()
+    plt.fill_between(range(24), smooth, alpha=0.15, color=colors[severity])
+    plt.plot(range(24), smooth, label=severity, color=colors[severity], linewidth=2)
+
+#axis formatting
+plt.xticks(range(24), hour_labels, rotation=45)
+plt.xlim(0, 23)
+plt.margins(x=0)
+
+#labels and legend
+plt.title("Crashes by Percent by Hour and Severity")
+plt.xlabel("Time of Day")
+plt.ylabel("Percent of Crashes")
+plt.grid(alpha=0.3, linestyle="--")
+plt.legend(title="Crash Severity")
+
+#save and show
+plt.tight_layout()
+
+plt.savefig("fig1_distribution_danger_window.png")
+print("Figure saved as 'fig1_distribution_danger_window.png'\n")
+
+plt.show()
+
+
+#-------------------------------------------------#
+# PART 4: Relationship Visualization - Crashes by Hour
+#-------------------------------------------------#
+
+print("\n-------------------------------------------------\n")
+print("PART 4: Relationship Visualization — Crashes by Hour\n")
+print("-------------------------------------------------\n")
+
+data4 = df_clean.copy()
+
+###data = data[::5]
+
+
+data4 = data4[data4['LATITUDE'].notna() & data4['LONGITUDE'].notna()]
+data4 = data4.drop(columns = ['ZIP_CODE'])
+data4 = data4[data4['NUMBER_OF_PERSONS_INJURED'].notna() & data4['NUMBER_OF_PERSONS_KILLED'].notna()]
+
+data4['CRASH_DATE'] = pd.to_datetime(data4['CRASH_DATE'])
+
+
+data4['YEAR'] = data4['CRASH_DATE'].dt.year
+
+data4 = data4[data4['YEAR'] != 2026]
+years = data4.groupby('YEAR').agg(
+    CRASH_COUNT=('COLLISION_ID', 'size'),
+    TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
+    AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
+).reset_index()
+
+min_s, max_s = 10, 60  # control your min/max dot size
+
+years['SIZES'] = (years['AVG_INJURED'] - years['AVG_INJURED'].min()) / \
+        (years['AVG_INJURED'].max() - years['AVG_INJURED'].min()) \
+        * (max_s - min_s) + min_s
+
+
+fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED', 
+                 hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
+                 labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Average_Injuries_per_Incident'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
+
+fig.write_html("fig2_crashDanger.html")
+
+fig.show()
+
+
+#-------------------------------------------------#
+# PART 5: Distribution Visualization - Crashes by Hour
+#-------------------------------------------------#
+
+print("\n-------------------------------------------------\n")
+print("PART 5: Distribution Visualization — Crashes by Hour\n")
+print("-------------------------------------------------\n")
+
+data5 = df_clean.copy()
+
+# Aggregate: crash count by HOUR (all days combined)
+hourly = (data5.dropna(subset=['HOUR'])
+    .groupby('HOUR')
+    .size()
+    .reset_index(name='CRASH_COUNT'))
+
+hours = np.arange(24)
+
+plt.figure(figsize=(11, 5))
+
+plt.bar(hours, hourly.set_index('HOUR')['CRASH_COUNT'].reindex(hours, fill_value=0),
+        color='teal', edgecolor='black', linewidth=1, alpha=0.85)
+
+# Shade rush hour bands
+plt.axvspan(7 - 0.5, 9 + 0.5, alpha=0.12, color='red', label='Rush Hours')
+plt.axvspan(16 - 0.5, 18 + 0.5, alpha=0.12, color='red')
+
+plt.title("NYC Motor Vehicle Crashes by Hour of Day")
+plt.xlabel("Hour of Day (0 = Midnight)")
+plt.ylabel("Total Crashes")
+plt.xticks(hours, [f'{h:02d}:00' for h in hours], rotation=45)
+plt.legend()
+plt.grid(alpha=0.3, linestyle='--')
+plt.xlim(-0.7, 23.7)
+plt.figtext(0.01, 0.02, "Shaded bands = morning (7–9 AM) and evening (4–6 PM) rush hours",
+            fontsize=7, color='darkgray')
+
+plt.tight_layout()
+
+plt.savefig('fig3_distribution_crashes_by_hour.png')
+print("Figure saved as 'fig3_distribution_crashes_by_hour.png'\n")
+
+plt.show()
+
+
+#-------------------------------------------------#
+# PART 6: Geospatial Visualization - Crashes by Hour
+#-------------------------------------------------#
+
+print("\n-------------------------------------------------\n")
+print("PART 6: Geospatial Visualization — Crashes by Hour\n")
+print("-------------------------------------------------\n")
 
 
 #----#
