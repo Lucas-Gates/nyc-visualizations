@@ -1,9 +1,7 @@
-from clean_data import load_and_clean_data
-
-from Dist_1 import dist1
-from Dist_2 import dist2
-from relationships import relPlot
-
+from vis_code.clean_data import load_and_clean_data
+from vis_code.Dist_1 import dist1
+from vis_code.Dist_2 import dist2
+from vis_code.relationships import relPlot
 
 print("\n\n--------------------------")
 print("CS_2300 - Final Project")
@@ -34,9 +32,7 @@ while True:
 
     elif choice == "4":
         dist1(df_clean)
-
         dist2(df_clean)
-
         fig = relPlot(df_clean)
         fig.show()
 
