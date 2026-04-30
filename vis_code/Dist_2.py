@@ -5,8 +5,20 @@ import seaborn as sns
 import geopandas as gpd
 import plotly.express as px
 
+def format_hour(h):
+    if h == 0:
+        return "12 AM"
+    elif h < 12:
+        return f"{h} AM"
+    elif h == 12:
+        return "12 PM"
+    else:
+        return f"{h - 12} PM"
+
 def dist2(data):
     data_dist_2 = data.copy()
+
+    hour_labels = [format_hour(h) for h in range(24)]
 
     # Aggregate: crash count by HOUR (all days combined)
     hourly = (data_dist_2.dropna(subset=['HOUR'])
@@ -26,9 +38,8 @@ def dist2(data):
     plt.axvspan(16 - 0.5, 18 + 0.5, alpha=0.12, color='red')
 
     plt.title("NYC Motor Vehicle Crashes by Hour of Day")
-    plt.xlabel("Hour of Day (0 = Midnight)")
     plt.ylabel("Total Crashes")
-    plt.xticks(hours, [f'{h:02d}:00' for h in hours], rotation=45)
+    plt.xticks(hours, hour_labels, rotation=45)
     plt.legend()
     plt.grid(alpha=0.3, linestyle='--')
     plt.xlim(-0.7, 23.7)

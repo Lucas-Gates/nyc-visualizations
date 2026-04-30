@@ -7,7 +7,7 @@ print("\n\n--------------------------")
 print("CS_2300 - Final Project")
 print("--------------------------\n")
 
-print("Cleaning data...")
+print("Cleaning data...\n")
 df_clean = load_and_clean_data()
 
 while True:
