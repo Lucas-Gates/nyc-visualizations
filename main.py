@@ -2,6 +2,8 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
+import geopandas as gpd
+import plotly.express as px
 
 
 #------#
@@ -210,7 +212,10 @@ plt.legend(title="Crash Severity")
 
 #save and show
 plt.tight_layout()
+
 plt.savefig("fig1_distribution_danger_window.png")
+print("Figure saved as 'fig1_distribution_danger_window.png'\n")
+
 plt.show()
 
 
@@ -221,6 +226,42 @@ plt.show()
 print("\n-------------------------------------------------\n")
 print("PART 4: Relationship Visualization — Crashes by Hour\n")
 print("-------------------------------------------------\n")
+
+data = df_clean.copy()
+
+###data = data[::5]
+
+
+data = data[data['LATITUDE'].notna() & data['LONGITUDE'].notna()]
+data = data.drop(columns = ['ZIP_CODE'])
+data = data[data['NUMBER_OF_PERSONS_INJURED'].notna() & data['NUMBER_OF_PERSONS_KILLED'].notna()]
+
+data['CRASH_DATE'] = pd.to_datetime(data['CRASH_DATE'])
+
+
+data['YEAR'] = data['CRASH_DATE'].dt.year
+
+data = data[data['YEAR'] != 2026]
+years = data.groupby('YEAR').agg(
+    CRASH_COUNT=('COLLISION_ID', 'size'),
+    TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
+    AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
+).reset_index()
+
+min_s, max_s = 10, 60  # control your min/max dot size
+
+years['SIZES'] = (years['AVG_INJURED'] - years['AVG_INJURED'].min()) / \
+        (years['AVG_INJURED'].max() - years['AVG_INJURED'].min()) \
+        * (max_s - min_s) + min_s
+
+
+fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED', 
+                 hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
+                 labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Average_Injuries_per_Incident'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
+
+fig.write_html("fig2_crashDanger.html")
+
+fig.show()
 
 
 #-------------------------------------------------#
