@@ -162,11 +162,11 @@ print(f"Cleaned dataset saved to: {output_path}\n")
 
 
 #-------------------------------------------------#
-# PART 3: Distribution Visualization - Crashes by Hour
+# PART 3: Distribution Visualization - Crash Severity by Hour
 #-------------------------------------------------#
 
 print("\n-------------------------------------------------\n")
-print("PART 3: Distribution Visualization — Crashes by Hour\n")
+print("PART 3: Distribution Visualization - Crash Severity By Hour\n")
 print("-------------------------------------------------\n")
 
 data_3 = df_clean.copy()
@@ -222,56 +222,11 @@ plt.show()
 
 
 #-------------------------------------------------#
-# PART 4: Relationship Visualization - Crashes by Hour
+# PART 4: Distribution Visualization - Total Crashes By Hour
 #-------------------------------------------------#
 
 print("\n-------------------------------------------------\n")
-print("PART 4: Relationship Visualization — Crashes by Hour\n")
-print("-------------------------------------------------\n")
-
-data4 = df_clean.copy()
-
-###data = data[::5]
-
-
-data4 = data4[data4['LATITUDE'].notna() & data4['LONGITUDE'].notna()]
-data4 = data4.drop(columns = ['ZIP_CODE'])
-data4 = data4[data4['NUMBER_OF_PERSONS_INJURED'].notna() & data4['NUMBER_OF_PERSONS_KILLED'].notna()]
-
-data4['CRASH_DATE'] = pd.to_datetime(data4['CRASH_DATE'])
-
-
-data4['YEAR'] = data4['CRASH_DATE'].dt.year
-
-data4 = data4[data4['YEAR'] != 2026]
-years = data4.groupby('YEAR').agg(
-    CRASH_COUNT=('COLLISION_ID', 'size'),
-    TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
-    AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
-).reset_index()
-
-min_s, max_s = 10, 60  # control your min/max dot size
-
-years['SIZES'] = (years['AVG_INJURED'] - years['AVG_INJURED'].min()) / \
-        (years['AVG_INJURED'].max() - years['AVG_INJURED'].min()) \
-        * (max_s - min_s) + min_s
-
-
-fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED', 
-                 hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
-                 labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Average_Injuries_per_Incident'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
-
-fig.write_html("fig2_crashDanger.html")
-
-fig.show()
-
-
-#-------------------------------------------------#
-# PART 5: Distribution Visualization - Crashes by Hour
-#-------------------------------------------------#
-
-print("\n-------------------------------------------------\n")
-print("PART 5: Distribution Visualization — Crashes by Hour\n")
+print("PART 4: Distribution Visualization - Total Crashes By Hour\n")
 print("-------------------------------------------------\n")
 
 data5 = df_clean.copy()
@@ -309,6 +264,51 @@ plt.savefig('fig3_distribution_crashes_by_hour.png')
 print("Figure saved as 'fig3_distribution_crashes_by_hour.png'\n")
 
 plt.show()
+
+
+#-------------------------------------------------#
+# PART 5: Relationship Visualization - Crashes by Hour
+#-------------------------------------------------#
+
+print("\n-------------------------------------------------\n")
+print("PART 5: Relationship Visualization — Crashes by Hour\n")
+print("-------------------------------------------------\n")
+
+data4 = df_clean.copy()
+
+###data = data[::5]
+
+
+data4 = data4[data4['LATITUDE'].notna() & data4['LONGITUDE'].notna()]
+data4 = data4.drop(columns = ['ZIP_CODE'])
+data4 = data4[data4['NUMBER_OF_PERSONS_INJURED'].notna() & data4['NUMBER_OF_PERSONS_KILLED'].notna()]
+
+data4['CRASH_DATE'] = pd.to_datetime(data4['CRASH_DATE'])
+
+
+data4['YEAR'] = data4['CRASH_DATE'].dt.year
+
+data4 = data4[data4['YEAR'] != 2026]
+years = data4.groupby('YEAR').agg(
+    CRASH_COUNT=('COLLISION_ID', 'size'),
+    TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
+    AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
+).reset_index()
+
+min_s, max_s = 10, 60  # control your min/max dot size
+
+years['SIZES'] = (years['AVG_INJURED'] - years['AVG_INJURED'].min()) / \
+        (years['AVG_INJURED'].max() - years['AVG_INJURED'].min()) \
+        * (max_s - min_s) + min_s
+
+
+fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED', 
+                 hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
+                 labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Average_Injuries_per_Incident'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
+
+fig.write_html("fig2_crashDanger.html")
+
+fig.show()
 
 
 #-------------------------------------------------#
