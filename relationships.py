@@ -4,30 +4,30 @@ import geopandas as gpd
 import seaborn as sns
 import plotly.express as px
 
-def relPlot():
+def relPlot(data):
 
-    data = pd.read_csv("./data/Motor_Vehicle_Collisions_-_Crashes_20260421.csv",low_memory=False)
-
-
+    
 
 
+
+    '''
     data = data[data['LATITUDE'].notna() & data['LONGITUDE'].notna()]
     data = data.drop(columns = ['ZIP CODE'])
     data = data[data['NUMBER OF PERSONS INJURED'].notna() & data['NUMBER OF PERSONS KILLED'].notna()]
-
-    data['CRASH DATE'] = pd.to_datetime(data['CRASH DATE'])
-
-
+    '''
+    #data['CRASH DATE'] = pd.to_datetime(data['CRASH DATE'])
 
 
 
-    data['YEAR'] = data['CRASH DATE'].dt.year
+
+
+    #data['YEAR'] = data['CRASH DATE'].dt.year
 
     data = data[data['YEAR'] != 2026]
     years = data.groupby('YEAR').agg(
         CRASH_COUNT=('COLLISION_ID', 'size'),
-        TOTAL_INJURED=('NUMBER OF PERSONS INJURED', 'sum'),
-        AVG_INJURED=('NUMBER OF PERSONS INJURED', 'mean')
+        TOTAL_INJURED=('NUMBER_OF_PERSONS_INJURED', 'sum'),
+        AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
     ).reset_index()
 
 
