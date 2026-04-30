@@ -267,11 +267,11 @@ fig.show()
 
 
 #-------------------------------------------------#
-# PART 5: Aggregate Visualization - Crashes by Hour
+# PART 5: Distribution Visualization - Crashes by Hour
 #-------------------------------------------------#
 
 print("\n-------------------------------------------------\n")
-print("PART 5: Aggregate Visualization — Crashes by Hour\n")
+print("PART 5: Distribution Visualization — Crashes by Hour\n")
 print("-------------------------------------------------\n")
 
 data5 = df_clean.copy()
@@ -305,8 +305,8 @@ plt.figtext(0.01, 0.02, "Shaded bands = morning (7–9 AM) and evening (4–6 PM
 
 plt.tight_layout()
 
-plt.savefig('fig3_aggregate_crashes_by_hour.png')
-print("Figure saved as 'fig3_aggregate_crashes_by_hour.png'\n")
+plt.savefig('fig3_distribution_crashes_by_hour.png')
+print("Figure saved as 'fig3_distribution_crashes_by_hour.png'\n")
 
 plt.show()
 
