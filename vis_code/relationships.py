@@ -37,7 +37,7 @@ def relPlot(data):
 
     fig.update_layout(margin=dict(r=150))
 
-    fig.write_html("crashDanger.html")
+    fig.write_html("fig3_crash_danger.html")
     return fig
 
 
