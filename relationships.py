@@ -6,23 +6,6 @@ import plotly.express as px
 
 def relPlot(data):
 
-    
-
-
-
-    '''
-    data = data[data['LATITUDE'].notna() & data['LONGITUDE'].notna()]
-    data = data.drop(columns = ['ZIP CODE'])
-    data = data[data['NUMBER OF PERSONS INJURED'].notna() & data['NUMBER OF PERSONS KILLED'].notna()]
-    '''
-    #data['CRASH DATE'] = pd.to_datetime(data['CRASH DATE'])
-
-
-
-
-
-    #data['YEAR'] = data['CRASH DATE'].dt.year
-
     data = data[data['YEAR'] != 2026]
     years = data.groupby('YEAR').agg(
         CRASH_COUNT=('COLLISION_ID', 'size'),
