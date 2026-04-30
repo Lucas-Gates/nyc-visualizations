@@ -260,8 +260,8 @@ plt.figtext(0.01, 0.02, "Shaded bands = morning (7–9 AM) and evening (4–6 PM
 
 plt.tight_layout()
 
-plt.savefig('fig3_distribution_crashes_by_hour.png')
-print("Figure saved as 'fig3_distribution_crashes_by_hour.png'\n")
+plt.savefig('fig2_distribution_crashes_by_hour.png')
+print("Figure saved as 'fig2_distribution_crashes_by_hour.png'\n")
 
 plt.show()
 
@@ -306,18 +306,9 @@ fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED',
                  hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
                  labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Average_Injuries_per_Incident'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
 
-fig.write_html("fig2_crashDanger.html")
+fig.write_html("fig3_crashDanger.html")
 
 fig.show()
-
-
-#-------------------------------------------------#
-# PART 6: Geospatial Visualization - Crashes by Hour
-#-------------------------------------------------#
-
-print("\n-------------------------------------------------\n")
-print("PART 6: Geospatial Visualization — Crashes by Hour\n")
-print("-------------------------------------------------\n")
 
 
 #----#
