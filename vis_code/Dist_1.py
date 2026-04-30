@@ -1,18 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-
-
-#12 hour labels
-def format_hour(h):
-    if h == 0:
-        return "12 AM"
-    elif h < 12:
-        return f"{h} AM"
-    elif h == 12:
-        return "12 PM"
-    else:
-        return f"{h - 12} PM"
+from vis_code.extra_funcs import *
     
 def dist1(data):
     data_dist_1 = data.copy()
@@ -50,6 +39,6 @@ def dist1(data):
 
     #save and show
     plt.tight_layout()
-    plt.savefig("fig1_distribution_danger_window.png")
-    print("Figure saved as 'fig1_distribution_danger_window.png'\n")
+    plt.savefig("figures/fig1_crashes_dist_by_hour_and_severity.png")
+    print("Figure saved as 'figures/fig1_crashes_dist_by_hour_and_severity.png'")
     plt.show()

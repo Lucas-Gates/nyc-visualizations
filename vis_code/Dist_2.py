@@ -2,18 +2,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import seaborn as sns
-import geopandas as gpd
-import plotly.express as px
-
-def format_hour(h):
-    if h == 0:
-        return "12 AM"
-    elif h < 12:
-        return f"{h} AM"
-    elif h == 12:
-        return "12 PM"
-    else:
-        return f"{h - 12} PM"
+from vis_code.extra_funcs import *
 
 def dist2(data):
     data_dist_2 = data.copy()
@@ -48,7 +37,7 @@ def dist2(data):
 
     plt.tight_layout()
 
-    plt.savefig('fig2_distribution_crashes_by_hour.png')
-    print("Figure saved as 'fig2_distribution_crashes_by_hour.png'\n")
+    plt.savefig('figures/fig2_distribution_crashes_by_hour.png')
+    print("Figure saved as 'figures/fig2_distribution_crashes_by_hour.png'")
 
     plt.show()

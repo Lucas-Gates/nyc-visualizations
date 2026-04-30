@@ -32,7 +32,7 @@ def agg(data):
 
     plt.tight_layout()
 
-    plt.savefig('fig4_aggregate_crashes_by_borough.png')
-    print("Figure saved as 'fig4_aggregate_crashes_by_borough.png'\n")
+    plt.savefig('figures/fig4_aggregate_crashes_by_borough.png')
+    print("Figure saved as 'figures/fig4_aggregate_crashes_by_borough.png'")
 
     plt.show()

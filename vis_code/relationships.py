@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import geopandas as gpd
 import seaborn as sns
 import plotly.express as px
 
@@ -37,7 +36,8 @@ def relPlot(data):
 
     fig.update_layout(margin=dict(r=150))
 
-    fig.write_html("fig3_crash_danger.html")
+    fig.write_html("figures/fig3_crash_danger.html")
+    print("Figure saved as 'figures/fig3_crash_danger.html'")
     return fig
 
 
