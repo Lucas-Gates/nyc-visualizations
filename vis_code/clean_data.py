@@ -5,41 +5,28 @@ import numpy as np
 def load_and_clean_data():
     df = pd.read_csv(r"Data\Motor_Vehicle_Collisions_-_Crashes_20260421.csv", low_memory=False)
 
-    print("First 5 Rows:")
-    print(df.head())
-
-    print(f"\nTotal Number of Rows: {df.shape[0]}")
-    print(f"Total Number of Columns: {df.shape[1]}")
-
-    print("\nColumn Names:")
-    print(df.columns)
-
-    print("\nData Types:")
-    print(df.dtypes)
-
-    print("\nMissing Values:")
-    print(df.isna().sum())
-
-    print("\nDuplicate Rows:")
-    print(df.duplicated().sum())
-
     df_clean = df.copy()
 
+    print("\nFormatting headers\n")
     df_clean.columns = df_clean.columns.str.strip().str.upper().str.replace(r"\s+", "_", regex=True)
 
+    print("\nDropping duplicates and nulls\n")
     df_clean = df_clean.drop_duplicates()
 
     df_clean = df_clean.dropna(subset=["LATITUDE", "LONGITUDE", "BOROUGH"], how="all")
 
+    print("\nParsing dates and times\n")
     df_clean["CRASH_DATE"] = pd.to_datetime(df_clean["CRASH_DATE"], errors="coerce")
     df_clean["HOUR"] = pd.to_datetime(df_clean["CRASH_TIME"], format="%H:%M", errors="coerce").dt.hour
 
+    print("\nExtracting date components\n")
     df_clean["DAY_OF_WEEK"] = df_clean["CRASH_DATE"].dt.dayofweek
     df_clean["DAY_TYPE"] = df_clean["DAY_OF_WEEK"].apply(lambda x: "Weekend" if x >= 5 else "Weekday")
     df_clean["DAY_OF_WEEK"] = df_clean["CRASH_DATE"].dt.day_name()
     df_clean["MONTH"] = df_clean["CRASH_DATE"].dt.month
     df_clean["YEAR"] = df_clean["CRASH_DATE"].dt.year
 
+    print("\nCleaning ZIP_CODE and BOROUGH\n")
     df_clean["ZIP_CODE"] = df_clean["ZIP_CODE"].astype(str).str.zfill(5).str.strip()
     df_clean["ZIP_CODE"] = df_clean["ZIP_CODE"].replace({"nan": np.nan, "00000": np.nan})
 
@@ -50,6 +37,7 @@ def load_and_clean_data():
 
     unspecified = ["Unspecified", "1", "", "nan"]
 
+    print("\nCleaning contributing factors and vehicle types\n")
     for col in ["CONTRIBUTING_FACTOR_VEHICLE_1", "CONTRIBUTING_FACTOR_VEHICLE_2"]:
         if col in df_clean.columns:
             df_clean[col] = df_clean[col].str.strip().str.title()
@@ -75,6 +63,7 @@ def load_and_clean_data():
             .map(lambda x: lookup.get(str(x).lower(), x) if pd.notna(x) else np.nan)
         )
 
+    print("\nAssigning severity labels\n")
     def assign_severity(row):
         if row.get("NUMBER_OF_PERSONS_KILLED", 0) > 0:
             return 2
@@ -102,9 +91,5 @@ def load_and_clean_data():
     print(df_clean["BOROUGH"].value_counts(dropna=False))
 
     print(f"\nYear Range: {df_clean['YEAR'].min()} - {df_clean['YEAR'].max()}")
-
-    df_clean.to_csv(r"data\cleaned_motor_vehicle_crashes.csv", index=False)
-
-    print("\nCleaned data saved to data\\cleaned_motor_vehicle_crashes.csv")
 
     return df_clean
