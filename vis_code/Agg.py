@@ -8,32 +8,31 @@ import plotly.express as px
 def agg(data):
     data_agg_1 = data.copy()
 
-    # Aggregate: crash count by vehicle type
-    vehicle_counts = (
-        data_agg_1['VEHICLE_TYPE_CODE_1']
+    # Aggregate: crash count by borough
+    borough_counts = (
+        data_agg_1['BOROUGH']
         .value_counts()
         .dropna()
-        .head(10)
         .reset_index()
     )
-    vehicle_counts.columns = ['VEHICLE_TYPE', 'CRASH_COUNT']
+    borough_counts.columns = ['BOROUGH', 'CRASH_COUNT']
 
     plt.figure(figsize=(11, 5))
 
-    plt.bar(vehicle_counts['VEHICLE_TYPE'], vehicle_counts['CRASH_COUNT'],
+    plt.bar(borough_counts['BOROUGH'], borough_counts['CRASH_COUNT'],
             color='teal', edgecolor='black', linewidth=1, alpha=0.85)
 
-    plt.title("NYC Motor Vehicle Crashes by Vehicle Type\nTop 10 Vehicle Types")
-    plt.xlabel("Vehicle Type")
+    plt.title("NYC Motor Vehicle Crashes by Borough")
+    plt.xlabel("Borough")
     plt.ylabel("Total Crashes")
     plt.xticks(rotation=45, ha='right')
     plt.grid(alpha=0.3, linestyle='--')
-    plt.figtext(0.01, 0.02, "Based on Vehicle Type Code 1 (primary vehicle involved in crash)",
+    plt.figtext(0.01, 0.02, "Based on borough recorded at time of crash report",
                 fontsize=7, color='darkgray')
 
     plt.tight_layout()
 
-    plt.savefig('fig4_aggregate_crashes_by_vehicle.png')
-    print("Figure saved as 'fig4_aggregate_crashes_by_vehicle.png'\n")
+    plt.savefig('fig4_aggregate_crashes_by_borough.png')
+    print("Figure saved as 'fig4_aggregate_crashes_by_borough.png'\n")
 
     plt.show()
