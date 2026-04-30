@@ -1,7 +1,7 @@
 from clean_data import load_and_clean_data
 
-from Dist_1 import dist1Plot
-from Dist_2 import dist2Plot
+from Dist_1 import dist1
+from Dist_2 import dist2
 from relationships import relPlot
 
 
@@ -26,18 +26,16 @@ while True:
         dist1(df_clean)
 
     elif choice == "2":
-        dist2P(df_clean)
+        dist2(df_clean)
 
     elif choice == "3":
         fig = relPlot(df_clean)
         fig.show()
 
     elif choice == "4":
-        plot = dist1Plot(df_clean)
-        plot.show()
+        dist1(df_clean)
 
-        plot = dist2Plot(df_clean)
-        plot.show()
+        dist2(df_clean)
 
         fig = relPlot(df_clean)
         fig.show()
