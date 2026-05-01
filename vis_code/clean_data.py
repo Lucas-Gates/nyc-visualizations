@@ -84,12 +84,4 @@ def load_and_clean_data():
 
     print("Rows remaining after cleaning:", len(df_clean))
 
-    # print("\nSeverity Distribution:")
-    # print(df_clean["SEVERITY_LABEL"].value_counts())
-
-    # print("\nBorough Distribution:")
-    # print(df_clean["BOROUGH"].value_counts(dropna=False))
-
-    # print(f"\nYear Range: {df_clean['YEAR'].min()} - {df_clean['YEAR'].max()}")
-
     return df_clean

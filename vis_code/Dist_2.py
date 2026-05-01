@@ -1,7 +1,5 @@
-import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-import seaborn as sns
 from vis_code.extra_funcs import *
 
 def dist2(data):
@@ -27,8 +25,9 @@ def dist2(data):
     plt.axvspan(16 - 0.5, 18 + 0.5, alpha=0.12, color='red')
 
     plt.title("NYC Motor Vehicle Crashes by Hour of Day")
-    plt.ylabel("Total Crashes")
     plt.xticks(hours, hour_labels, rotation=45)
+    plt.xlabel("Time of Day")
+    plt.ylabel("Total Crashes")
     plt.legend()
     plt.grid(alpha=0.3, linestyle='--')
     plt.xlim(-0.7, 23.7)

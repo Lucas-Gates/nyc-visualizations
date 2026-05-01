@@ -1,9 +1,4 @@
-import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-import geopandas as gpd
-import plotly.express as px
 
 def agg(data):
     data_agg_1 = data.copy()

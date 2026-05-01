@@ -1,6 +1,4 @@
-import pandas as pd
 import matplotlib.pyplot as plt
-import numpy as np
 from vis_code.extra_funcs import *
     
 def dist1(data):

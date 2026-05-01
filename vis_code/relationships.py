@@ -1,6 +1,3 @@
-import pandas as pd
-import matplotlib.pyplot as plt
-import seaborn as sns
 import plotly.express as px
 
 def relPlot(data):
@@ -39,6 +36,3 @@ def relPlot(data):
     fig.write_html("figures/fig3_crash_danger.html")
     print("Figure saved as 'figures/fig3_crash_danger.html'")
     return fig
-
-
-    
