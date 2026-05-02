@@ -3,6 +3,7 @@ from vis_code.Dist_1 import dist1
 from vis_code.Dist_2 import dist2
 from vis_code.relationships import relPlot
 from vis_code.Agg import agg
+from vis_code.Parallel import parallel
 
 print("\n--------------------------")
 print("CS_2300 - Final Project")
@@ -20,7 +21,8 @@ while running:
     print("2. Run crashes by hour distribution visualization")
     print("3. Run relationships visualization")
     print("4. Run aggregated crashes by borough visualization")
-    print("5. Run all visualizations")
+    print("5. Run parallel coordinates visualization")
+    print("6. Run all visualizations")
     print("0. Quit")
 
     choice = input("\nEnter your choice: ")
@@ -39,12 +41,16 @@ while running:
         agg(df_clean)
 
     elif choice == "5":
+        parallel(df_clean)
+
+    elif choice == "6":
         dist1(df_clean)
         dist2(df_clean)
         fig = relPlot(df_clean)
         fig.show()
         agg(df_clean)
-
+        parallel(df_clean)
+        
     elif choice == "0":
         print("\n--------------------------")
         print("END OF PROGRAM")
