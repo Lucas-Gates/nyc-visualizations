@@ -1,22 +1,26 @@
 import matplotlib.pyplot as plt
+import webbrowser
+import os
 
 def agg(data):
-    data_agg_1 = data.copy()
 
-    # Aggregate: crash count by borough
+    # ── Data Preparation ────────────────────────────────────────────
+    # Count crashes per borough, drop missing, sort descending
     borough_counts = (
-        data_agg_1['BOROUGH']
+        data['BOROUGH']
         .value_counts()
         .dropna()
-        .reset_index()
+        .rename_axis('BOROUGH')
+        .reset_index(name='CRASH_COUNT')
     )
-    borough_counts.columns = ['BOROUGH', 'CRASH_COUNT']
 
+    # ── Plot ─────────────────────────────────────────────────────────
     plt.figure(figsize=(11, 5))
 
     plt.bar(borough_counts['BOROUGH'], borough_counts['CRASH_COUNT'],
             color='teal', edgecolor='black', linewidth=1, alpha=0.85)
 
+    # ── Labels & Formatting ──────────────────────────────────────────
     plt.title("NYC Motor Vehicle Crashes by Borough")
     plt.xlabel("Borough")
     plt.ylabel("Total Crashes")
@@ -27,7 +31,8 @@ def agg(data):
 
     plt.tight_layout()
 
+    # ── Export ───────────────────────────────────────────────────────
     plt.savefig('figures/fig4_aggregate_crashes_by_borough.png')
     print("Figure saved as 'figures/fig4_aggregate_crashes_by_borough.png'")
 
-    plt.show()
+    webbrowser.open("file://" + os.path.abspath("figures/fig4_aggregate_crashes_by_borough.png"))

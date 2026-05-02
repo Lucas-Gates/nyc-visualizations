@@ -1,4 +1,6 @@
 import plotly.express as px
+import webbrowser
+import os
 
 def relPlot(data):
 
@@ -9,16 +11,13 @@ def relPlot(data):
         AVG_INJURED=('NUMBER_OF_PERSONS_INJURED', 'mean')
     ).reset_index()
 
+    years['AVG_INJURED'] = round(years['AVG_INJURED'], 2)
 
-
-    years['AVG_INJURED'] = round(years['AVG_INJURED'],2)
-
-
-
-
-    fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED', 
+    fig = px.scatter(years, x='YEAR', y='CRASH_COUNT', size='AVG_INJURED',
                     hover_data=['YEAR', 'CRASH_COUNT', 'AVG_INJURED'],
-                    labels ={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Injuries per Crash'},title = 'NYC\'s Decline in Crashes, Increase in Danger ',  size_max= 120)
+                    labels={'YEAR': 'Year', 'CRASH_COUNT': 'Number of Crashes', 'AVG_INJURED': 'Injuries per Crash'},
+                    title='NYC\'s Decline in Crashes, Increase in Danger', size_max=120)
+
     fig.add_annotation(
         x=1.02, y=0.5,
         xref="paper", yref="paper",
@@ -35,4 +34,6 @@ def relPlot(data):
 
     fig.write_html("figures/fig3_crash_danger.html")
     print("Figure saved as 'figures/fig3_crash_danger.html'")
-    return fig
+
+    # Open in browser without blocking the terminal
+    webbrowser.open("file://" + os.path.abspath("figures/fig3_crash_danger.html"))

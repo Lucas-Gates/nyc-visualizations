@@ -1,3 +1,5 @@
+import os
+import webbrowser
 import matplotlib.pyplot as plt
 from vis_code.extra_funcs import *
     
@@ -39,4 +41,4 @@ def dist1(data):
     plt.tight_layout()
     plt.savefig("figures/fig1_crashes_dist_by_hour_and_severity.png")
     print("Figure saved as 'figures/fig1_crashes_dist_by_hour_and_severity.png'")
-    plt.show()
+    webbrowser.open("file://" + os.path.abspath("figures/fig1_crashes_dist_by_hour_and_severity.png"))
