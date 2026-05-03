@@ -12,11 +12,14 @@ BOROUGH_POPULATION = {
     'Staten Island':   495_747,
 }
 
+BOROUGH_ORDER = ['Brooklyn', 'Queens', 'Manhattan', 'Bronx', 'Staten Island']
+
 def agg(data):
     """
     Aggregation visualization: Total crash count by NYC borough.
     Produces two figures — raw counts (all years) and population-normalized
-    counts (2020 only, matched to Census population data).
+    counts (2021 only, matched to Census population data).
+    Boroughs are displayed in a fixed order across both figures.
     """
 
     # ── Data Preparation: Raw (All Years) ───────────────────────────
@@ -26,6 +29,9 @@ def agg(data):
         .dropna()
         .rename_axis('BOROUGH')
         .reset_index(name='CRASH_COUNT')
+        .set_index('BOROUGH')
+        .reindex(BOROUGH_ORDER)
+        .reset_index()
     )
 
     # ── Data Preparation: Normalized (2021 Only) ─────────────────────
@@ -36,6 +42,9 @@ def agg(data):
         .dropna()
         .rename_axis('BOROUGH')
         .reset_index(name='CRASH_COUNT')
+        .set_index('BOROUGH')
+        .reindex(BOROUGH_ORDER)
+        .reset_index()
     )
 
     borough_2021['POPULATION'] = borough_2021['BOROUGH'].map(BOROUGH_POPULATION)
@@ -58,7 +67,7 @@ def agg(data):
                 fontsize=7, color='darkgray')
 
     plt.tight_layout()
-
+    
     plt.savefig('figures/fig4a_aggregate_crashes_by_borough.png')
     print("Figure saved as 'figures/fig4a_aggregate_crashes_by_borough.png'")
 
