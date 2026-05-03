@@ -30,7 +30,7 @@ def parallel(data):
         vehicle_agg,
         dimensions=['VEHICLE_TYPE_NUM', 'CRASH_COUNT', 'AVG_SEVERITY'],
         color='AVG_SEVERITY',
-        color_continuous_scale=[[0, 'teal'], [1, 'red']],
+        color_continuous_scale='Plasma',
         labels={
             'VEHICLE_TYPE_NUM' : 'Vehicle Type',
             'CRASH_COUNT'      : 'Number of Crashes',

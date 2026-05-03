@@ -11,10 +11,11 @@ def dist1(data):
     #plot
     plt.figure(figsize=(11, 5))
     colors = {
-        "Property Damage": "blue",
-        "Injury": "orange",
-        "Fatal": "red"
+    "Property Damage": "#0077BB",   # blue
+    "Injury":          "#EE7733",   # amber
+    "Fatal":           "#AA3377",   # magenta/purple
     }
+
     plot_order = ["Property Damage", "Injury", "Fatal"]
     for severity in plot_order:
         subset = data_dist_1[data_dist_1["SEVERITY_LABEL"] == severity]
