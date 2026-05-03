@@ -12,10 +12,10 @@ UNSPECIFIED = ["Unspecified", "1", "", "nan"]
 
 VEHICLE_MAP = {
     "Sedan"      : ["Sedan", "4 Dr Sedan", "2 Dr Sedan", "Passenger Vehicle"],
-    "SUV"        : ["Station Wagon/Sport Utility Vehicle", "Suv"],
+    "SUV"        : ["Station Wagon/Sport Utility Vehicle", "Suv", "Standing S"],
     "Taxi"       : ["Taxi", "Taxi Cab"],
     "Bus"        : ["Bus", "Omnibus", "School Bus"],
-    "Truck"      : ["Truck", "Pick-Up Truck", "Box Truck", "Flat Bed"],
+    "Truck"      : ["Truck", "Pick-Up Truck", "Box Truck", "Flat Bed", "Dump"],
     "Motorcycle" : ["Motorcycle", "Motorbike"],
     "Bicycle"    : ["Bike", "Bicycle", "E-Bike"],
 }
