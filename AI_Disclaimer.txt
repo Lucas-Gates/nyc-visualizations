@@ -1,0 +1,29 @@
+As AI tools WERE permitted for this project, our team DID utilize AI tools. The following is why and how we used AI:
+
+
+Data Exploration: 
+	As this data set had over 2 million entries, using AI to help us find potential issues was very useful. Of course, we also used the tools we learned in class to explore our data and find what needed cleaning, but AI was able to help push our exploration further.
+
+
+clean_data.py:
+	There were a few parts of the cleaning that was AI generated. 
+	Part 4, extracting the time features, was needed for later use, however was a little difficult to get working. We were able to paste our semi-functioning code into an AI and get the extraction of time features fully-functional. 
+	Part 7, consolidating the vehicle type labels, was very similar. We had code written that was close, but not functional. We were able to use AI to push us past the finish line for this part. 
+	Part 9, impossible values, was completely made by AI. We had described our current cleaning setup to an AI and asked for any other suggestions. The AI responded with the code for part 9, as well as a brief explanation as to why it was important. Some of the values given by the AI were a little off in our opinion, so we tweaked it to give us a more accurate cleaning. 
+	Finally, as our clean_data.py code was getting very messy by time we finished getting it functional, we used AI to clean-up or cleaning code. We specified to keep the original functionality of our code, just to make the formatting more uniform. 
+
+
+Dist_2.py:
+	For Dist_2.py we used AI to create the red shaded bands for easier analysis. This was an idea that we had thought of, but couldn't quite get the code for it working exactly as we wanted. We were able to have an AI create this bit of code, and then we could manually tweak the values to dial it in perfectly. We also performed the same AI cleaning/formatting on this code to make it more uniform.
+
+
+Agg.py:
+	The original figure, 4a, was created by us. We then realized that this visualization needed normalization to provide accurate analysis. We gave this code to an AI as well as our found population data, and asked to create additional code to show the same graph but normalized. This was simply done as a time saver. We also performed the same AI cleaning/formatting on this code to make it more uniform. 
+
+
+Parallel.py:
+	This code was basically entirely AI generated. During our last lecture, Dr. Ekin was showing off some cool visualization types. One of these was the parallel coordinates visualization. We thought that this was really interesting looking and could be used in our project to show the different vehicle types vs. crashes vs. severity rating. While working on other aspects of the project, we were also vibe-coding this visual in the background. We had specified to keep the same formatting that it had been applying to our other code. After a bit of tweaking we ended up getting a pretty interesting visualization that has a lot to show.
+
+
+Misc:
+	Once our code was fully functional, we then used AI to make everything pretty. This included the title, subtitle, control panel, outro, and loading "..." text in main.py. This loading "..." effect was then also implemented into clean_data.py to give a nicer feel to the informative updates. 
