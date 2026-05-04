@@ -37,7 +37,7 @@ CASUALTY_THRESHOLDS = {
 }
 
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# ── Misc. Functions ──────────────────────────────────────────────────────────────────
 
 def _assign_severity(row):
     """Returns a severity score: 0 = property damage, 1 = injury, 2 = fatal."""

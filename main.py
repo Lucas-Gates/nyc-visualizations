@@ -6,7 +6,7 @@ from vis_code.relationships import relPlot
 from vis_code.Agg import agg
 from vis_code.Parallel import parallel
 
-# ── Constants ────────────────────────────────────────────────────────────────
+# ── "Images" ────────────────────────────────────────────────────────────────
 
 TITLE = [
     "  ██████╗ ███████╗    ██████╗ ██████╗   █████╗   █████╗ ",
@@ -49,7 +49,7 @@ MENU = """
 ══════════════════════════════════════════"""
 
 
-# ── Helpers ──────────────────────────────────────────────────────────────────
+# ── Misc. Functions ──────────────────────────────────────────────────────────────────
 
 def typewrite(text, delay=0.4, dots=3):
     """Prints text followed by animated dots."""
